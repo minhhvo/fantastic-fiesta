@@ -1,0 +1,8 @@
+[tool.uv.workspace]
+members = ["packages/*"]
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.6.1",
+    "pytest-cov>=7.1.0",
+]
