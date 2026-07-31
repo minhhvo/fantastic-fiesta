@@ -1,0 +1,17 @@
+{
+  "name": "Fantastic Fiesta Workspace: A Python Sandbox",
+  "build": {
+    "context": ".",
+    "dockerfile": "Dockerfile"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "charliermarsh.ruff",
+        "tamasfe.even-better-toml",
+        "ms-python.python"
+      ]
+    }
+  },
+  "postCreateCommand": "uv sync"
+}
