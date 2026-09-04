@@ -1,15 +1,38 @@
 {
   "name": "Fantastic Fiesta Workspace: A Python Sandbox",
+  
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace/projects,type=bind",
+  "workspaceFolder": "/workspace/projects",
+  
   "build": {
     "context": ".",
     "dockerfile": "Dockerfile"
   },
+  
   "customizations": {
     "vscode": {
+      "settings": {
+        "clangd.arguments": ["--compile-commands-dir=${workspaceFolder}/build"]
+      },
       "extensions": [
+        // Python projects
         "charliermarsh.ruff",
         "tamasfe.even-better-toml",
-        "ms-python.python"
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.vscode-python-envs",
+        "brandonfowler.workspace-notepad",
+        "Uribaba123.git--command-notepad",
+        "nicksp.notelets",
+        "EchoAPI.echoapi-for-vscode",
+        "Fooxly.workspace",
+        
+        // C-C++ projects
+        "llvm-vs-code-extensions.vscode-clangd", 
+        "twxs.cmake",                             // CMake syntax highlighting
+        "ms-vscode.cmake-tools",                  // CMake build automation
+        "vadimcn.vscode-lldb"                     // Native debugger
+    
       ]
     }
   },

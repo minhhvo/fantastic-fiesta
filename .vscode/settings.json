@@ -1,9 +1,9 @@
 {
-    "workbench.settings.useSplitJSON": true,
-    "files.readonlyInclude": {
-        "packages/**": true
-    },
-    "files.readonlyExclude": {
-        "packages/bibtex_frbr/**": true
-    }
+  "files.readonlyInclude": {
+    "packages/**": true
+  },
+  "files.readonlyExclude": {
+    "packages/algebra/**": true
+  },
+  "cmake.sourceDirectory": "/workspace/projects/packages/algebra/src/algebra/struct"
 }

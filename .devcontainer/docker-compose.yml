@@ -1,0 +1,33 @@
+services:
+  dev_env:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ..:/workspaces/projects:cached
+      # Mount the named volume to our target directory
+      - bashhistory:/commandhistory
+    command: /bin/sh -c "while sleep 1000; do :; done"
+
+  cxx_compile_env:
+    build:
+      context: .
+      dockerfile: Dockerfile.win_build
+    volumes:
+      - .:/host_source:ro
+    command: >
+      bash -c "
+      echo '--- Cloning Local Git Tree ---' &&
+      git clone /host_source /build_env/repo &&
+      cd /build_env/repo/packages/algebra/src/algebra/.cpp &&
+
+      echo '--- Cross-Compiling for Windows ---' &&
+      cmake -B /build_out -G Ninja -DCMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ -DCMAKE_SYSTEM_NAME=Windows &&
+      cmake --build /build_out &&
+      
+      echo '--- Executing .exe in WINE Sandbox ---' &&
+      wine /build_out/algebra_test.exe
+
+# Declare the named volume so Docker knows to persist it
+volumes:
+  bashhistory:

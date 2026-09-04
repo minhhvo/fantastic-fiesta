@@ -2,20 +2,29 @@
 # **Purpose:** Instructions to build a Docker container for development (dev) and code experimenting. 
 # *see also:* `./devcontainer.json`.
 
-# Original creators (lambda-science/modern-python-boilerplate) used `python:3.13`
-FROM python:3.12-slim-bullseye
+
+FROM python:3.14-bookworm
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
 
-ENV UV_COMPILE_BYTECODE=1
-ENV UV_NO_CACHE=1
+ENV UV_COMPILE_BYTECODE=1 \
+    UV_LINK_MODE=copy \
+    UV_NO_CACHE=0
 
 RUN apt update && \
     apt install -y --no-install-recommends \
     build-essential \
     cmake \
     curl \
-    gcc \
     git \
+    ninja-build \
+    gdb \
+    clangd \
+    clang-format \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /workspaces/bibtex_frbr
+RUN mkdir /commandhistory
+RUN SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhistory/.bash_history" \
+    && echo "$SNIPPET" >> "/root/.bashrc"
+
+WORKDIR /workspaces/projects

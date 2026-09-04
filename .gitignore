@@ -3,6 +3,10 @@ __pycache__/
 *.py[codz]
 *$py.class
 
+# PDF
+docs/**/*.pdf
+docs/Functional_Requirements_for_Bibliographic_Records/*.pdf
+
 # C extensions
 *.so
 
@@ -156,6 +160,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.venv/
 
 # Spyder project settings
 .spyderproject

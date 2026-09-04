@@ -1,0 +1,4 @@
+/workspace/projects/CMakeFiles/edit_cache.dir
+/workspace/projects/CMakeFiles/rebuild_cache.dir
+/workspace/projects/packages/algebra/src/algebra/struct/CMakeFiles/edit_cache.dir
+/workspace/projects/packages/algebra/src/algebra/struct/CMakeFiles/rebuild_cache.dir

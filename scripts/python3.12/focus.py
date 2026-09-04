@@ -1,9 +1,8 @@
+"""
 #!/bin/bash
 # Usage: ./scripts/focus.sh <package_name>
 
 PKG_NAME=$1
-DEVCONTAINER_PATH=".devcontainer/devcontainer.json"
-
 if [ -z "$PKG_NAME" ]; then 
   echo "Error: Please provide a package name."
   exit 1
@@ -24,3 +23,5 @@ cat << JSON > .vscode/settings.json
 JSON
 
 echo "Workspace soft-locked. Excluded from Read-only: packages/$PKG_NAME."
+
+"""

@@ -1,8 +1,58 @@
+[project]
+name = "fantastic-fiesta"
+version = "0.1.0"
+requires-python = ">=3.14"
+dependencies = [
+    "pydantic>=2.13.4",
+    "pylance>=10.0.0",
+]
+
+[project.optional-dependencies]
+objectfactory = ["objectfactory==0.2.0"]
+plot = [
+  "matplotlib>=3.6.3"
+]
+excel = [
+  "odfpy>=1.4.1",
+  "openpyxl>=3.1.0",
+  "python-calamine>=0.1.7",
+  "pyxlsb>=1.0.10",
+  "xlrd>=2.0.1",
+  "xlsxwriter>=3.0.5"
+]
+
+[tool.pytest.ini_options]
+addopts = "--import-mode=importlib"
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+bibtex-frbr = { workspace = true }
+tqdm = { git = "https://github.com/tqdm/tqdm" }
+
 [tool.uv.workspace]
 members = ["packages/*"]
 
+[tool.ruff.lint]
+select = [
+    # Pyflakes
+    "F",
+    # Pycodestyle
+    "E",
+    "W",
+    # isort
+    "I001"
+]
+ignore = ["E501"]
+
+
 [dependency-groups]
 dev = [
+    "isort>=8.0.1",
+    "mypy>=2.3.1",
     "pre-commit>=4.6.1",
+    "pyplugs>=0.5.4",
     "pytest-cov>=7.1.0",
+    "ruff==0.16.1",
 ]
