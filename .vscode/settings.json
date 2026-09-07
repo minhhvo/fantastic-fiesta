@@ -5,5 +5,5 @@
   "files.readonlyExclude": {
     "packages/algebra/**": true
   },
-  "cmake.sourceDirectory": "/workspace/projects/packages/algebra/src/algebra/struct"
+  "makefile.clearOutputBeforeBuild": true
 }

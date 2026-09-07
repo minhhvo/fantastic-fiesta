@@ -7,7 +7,12 @@
             "id": "packageName",
             "type":"promptString",
             "description": "Enter the package to focus on:",
-        }
+        },
+        {
+            "id": "exeTarget",
+            "type": "promptString",
+            "description": "Path to test-build executable (e.g., build/algebra_test.exe):"
+        },
     ],
     "tasks": [
         {
@@ -27,17 +32,6 @@
             "presentation": {
                 "reveal": "always",
                 "panel": "new"
-            }
-        },
-        {
-            "type": "cmake",
-            "label": "CMake: configure",
-            "command": "configure",
-            "problemMatcher": [],
-            "detail": "CMake template configure task",
-            "group": {
-                "kind": "build",
-                "isDefault": true
             }
         }
     ]

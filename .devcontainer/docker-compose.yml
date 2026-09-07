@@ -1,33 +1,87 @@
 services:
-  dev_env:
+  workspace:
+    container_name: minhhvo
+    image: baseworkspace
     build:
       context: .
       dockerfile: Dockerfile
+      target: devcontainer
+    
     volumes:
-      - ..:/workspaces/projects:cached
-      # Mount the named volume to our target directory
-      - bashhistory:/commandhistory
-    command: /bin/sh -c "while sleep 1000; do :; done"
+      - ..:/workspace:cached
+      - bashhistory:/commandhistory:rw
+      - clibs:/clib
+      # --- Physical Host Bind Mounts to /clib ---
+      - type: bind
+        source: C:/Program Files/Microsoft Visual Studio
+        target: /clib/msvc
+        read_only: true
+        
+      # 2. Windows SDK (Universal C Runtime / UCRT headers)
+      - type: bind
+        source: C:/Program Files (x86)/Windows Kits/10
+        target: /clib/windows_kits
+        read_only: true
+        
+      # 3. Dedicated custom library folder for Boost (futureproof; use as needed)
+      - type: bind
+        source: C:/Users/votha/clib
+        target: /clib/dst
+        read_only: false
+    
+    command: sleep infinity
 
-  cxx_compile_env:
-    build:
+  sandbox:
+    container_name: devtest
+    image: devtest
+    build: 
       context: .
-      dockerfile: Dockerfile.win_build
+      dockerfile: Dockerfile
+      target: sandbox
+
+    depends_on:
+      - workspace
+    environment:
+      - TARGET_EXE=${TARGET_EXE:-}
+
+    develop:
+      watch:
+        - path: ../build
+          action: sync+exec
+          target: /sandbox_workspace/build
+          exec:
+            command: >
+              bash -c '
+              if [ -z "$$TARGET_EXE" ]; then 
+                echo "No TARGET_EXE is set. Skipping execution." ; 
+                exit 0 ; 
+              fi ; 
+              wine "/sandbox_workspace/$$TARGET_EXE"'
     volumes:
-      - .:/host_source:ro
+      - ..:/sandbox_workspace
+      
+      # --- Sandbox Read-Only Library Access ---
+      - type: bind
+        source: C:/Program Files/Microsoft Visual Studio
+        target: /clib/msvc
+        read_only: true
+
+      - type: bind
+        source: C:/Program Files (x86)/Windows Kits/10
+        target: /clib/windows_kits
+        read_only: true
+
+      - type: bind
+        source: C:/Users/votha/clib
+        target: /clib/dst
+        read_only: true # Strictly RO for the sandbox
+    
     command: >
       bash -c "
-      echo '--- Cloning Local Git Tree ---' &&
-      git clone /host_source /build_env/repo &&
-      cd /build_env/repo/packages/algebra/src/algebra/.cpp &&
+      echo \"--- Executing $${TARGET_EXE} in WINE Sandbox ---\" &&
+      wine /sandbox_workspace/$${TARGET_EXE}
+      "
 
-      echo '--- Cross-Compiling for Windows ---' &&
-      cmake -B /build_out -G Ninja -DCMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ -DCMAKE_SYSTEM_NAME=Windows &&
-      cmake --build /build_out &&
-      
-      echo '--- Executing .exe in WINE Sandbox ---' &&
-      wine /build_out/algebra_test.exe
-
-# Declare the named volume so Docker knows to persist it
 volumes:
-  bashhistory:
+  bashhistory:   
+  clibs:

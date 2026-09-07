@@ -1,21 +1,38 @@
 {
-  "name": "Fantastic Fiesta Workspace: A Python Sandbox",
+  "name": "Fantastic Fiesta Workspace: A CPython Sandbox",
   
-  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace/projects,type=bind",
-  "workspaceFolder": "/workspace/projects",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "workspace",
+  "workspaceFolder": "/workspace",
   
-  "build": {
-    "context": ".",
-    "dockerfile": "Dockerfile"
+  "features": {
+    "ghcr.io/ttyrho/devcontainer-features/gcc:1": { },
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
   },
-  
+
+  "portsAttributes": {
+    "3000": {
+      "label": "Application",
+      "onAutoForward": "notify"
+    },
+    "38283": {
+      "label": "vscode-backend"
+    },
+    "40000-55000": {
+      "onAutoForward": "ignore"
+    }
+  },
+  "capAdd": ["SYS_PTRACE", "SYS_ADMIN"],
+
   "customizations": {
     "vscode": {
       "settings": {
+        "explorer.expandSingleFolderWorkspaces": false,
+        "explorer.fileNesting.enabled": true,
+        "makefile.clearOutputBeforeBuild": true,
         "clangd.arguments": ["--compile-commands-dir=${workspaceFolder}/build"]
       },
       "extensions": [
-        // Python projects
         "charliermarsh.ruff",
         "tamasfe.even-better-toml",
         "ms-python.python",
@@ -26,15 +43,16 @@
         "nicksp.notelets",
         "EchoAPI.echoapi-for-vscode",
         "Fooxly.workspace",
-        
-        // C-C++ projects
         "llvm-vs-code-extensions.vscode-clangd", 
-        "twxs.cmake",                             // CMake syntax highlighting
-        "ms-vscode.cmake-tools",                  // CMake build automation
-        "vadimcn.vscode-lldb"                     // Native debugger
-    
+        "twxs.cmake",
+        "ms-vscode.cpptools",
+        "ms-vscode.cmake-tools",
+        "vadimcn.vscode-lldb"
       ]
     }
   },
-  "postCreateCommand": "uv sync"
+  
+  "postCreateCommand": {
+    "workspace": "uv sync"
+  }
 }
