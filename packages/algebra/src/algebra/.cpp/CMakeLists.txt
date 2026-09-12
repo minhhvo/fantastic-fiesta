@@ -1,11 +1,22 @@
-# /workspace/projects/packages/algebra/src/algebra/struct/CMakeLists.txt
+# /workspace/packages/algebra/src/algebra/.cpp/
+# CMakeLists.txt
 
-cmake_minimum_required(VERSION 3.25)
-project(algebra-build-test)
-set(CMAKE_CXX_STANDARD 20)
+set(TARGET_PROJECT "Calculator")
+project(${TARGET_PROJECT})
 
-# 1. Create a standalone executable for isolated testing
-add_executable(algebra_test main.cpp shape.cpp)
+# STEP 1: The "Dry" Compile
+# Using an OBJECT library syntax-checks and compiles the source files without the overhead of linking.
+add_library(${TARGET_PROJECT} STATIC MathLibrary.cpp Calculator.cpp)
+target_include_directories(${TARGET_PROJECT} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
-# 2. Tell the compiler where to find shape.hpp
-target_include_directories(algebra_test PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+# STEP 2: The Compiled Binary
+# Compiles the test executable completely independently from the same source files.
+add_executable(${TARGET_PROJECT}_test Calculator.cpp)
+target_link_libraries(
+    ${TARGET_PROJECT}_test PRIVATE ${TARGET_PROJECT} GTest::gtest_main
+)
+
+# (Optional) AUTO-RUN: Execute the test automatically if compilation succeeds
+add_custom_command(TARGET ${TARGET_PROJECT}_test POST_BUILD
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${TARGET_PROJECT}_test
+)
