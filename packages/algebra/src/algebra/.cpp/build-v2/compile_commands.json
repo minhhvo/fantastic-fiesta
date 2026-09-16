@@ -1,0 +1,22 @@
+[
+{
+  "directory": "/workspace/packages/algebra/src/algebra/.cpp/build-v2",
+  "command": "/usr/bin/c++ -std=gnu++20 -o CMakeFiles/Calculator_obj.dir/Calculator.cpp.o -c /workspace/packages/algebra/src/algebra/.cpp/Calculator.cpp",
+  "file": "/workspace/packages/algebra/src/algebra/.cpp/Calculator.cpp"
+},
+{
+  "directory": "/workspace/packages/algebra/src/algebra/.cpp/build-v2",
+  "command": "/usr/bin/c++ -std=gnu++20 -o CMakeFiles/Calculator_obj.dir/MathLibrary.cpp.o -c /workspace/packages/algebra/src/algebra/.cpp/MathLibrary.cpp",
+  "file": "/workspace/packages/algebra/src/algebra/.cpp/MathLibrary.cpp"
+},
+{
+  "directory": "/workspace/packages/algebra/src/algebra/.cpp/build-v2",
+  "command": "/usr/bin/c++ -std=gnu++20 -o CMakeFiles/Calculator_test.dir/Calculator.cpp.o -c /workspace/packages/algebra/src/algebra/.cpp/Calculator.cpp",
+  "file": "/workspace/packages/algebra/src/algebra/.cpp/Calculator.cpp"
+},
+{
+  "directory": "/workspace/packages/algebra/src/algebra/.cpp/build-v2",
+  "command": "/usr/bin/c++ -std=gnu++20 -o CMakeFiles/Calculator_test.dir/MathLibrary.cpp.o -c /workspace/packages/algebra/src/algebra/.cpp/MathLibrary.cpp",
+  "file": "/workspace/packages/algebra/src/algebra/.cpp/MathLibrary.cpp"
+}
+]

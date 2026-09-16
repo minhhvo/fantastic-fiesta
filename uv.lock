@@ -96,12 +96,6 @@ wheels = [
 name = "bibtex-frbr"
 version = "0.1.0"
 source = { editable = "packages/bibtex_frbr" }
-dependencies = [
-    { name = "pydantic" },
-]
-
-[package.metadata]
-requires-dist = [{ name = "pydantic", specifier = ">=2.13.4" }]
 
 [[package]]
 name = "cfgv"

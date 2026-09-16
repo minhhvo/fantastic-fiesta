@@ -5,5 +5,12 @@
   "files.readonlyExclude": {
     "packages/algebra/**": true
   },
-  "makefile.clearOutputBeforeBuild": true
+  "makefile.clearOutputBeforeBuild": true,
+  "cmake.ignoreCMakeListsMissing": false,
+  "files.exclude": {
+    ".devcontainer": false,
+    "packages/bibtex_frbr": false,
+    "packages/json-api-metaschema": false
+  },
+  "cmake.sourceDirectory": "/workspace/packages/algebra/src/algebra/.cpp"
 }
