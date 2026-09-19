@@ -7,7 +7,7 @@ FROM mcr.microsoft.com/devcontainers/cpp:1-debian-12 AS base
 
 # Install Wine for testing Windows cross-compiled binaries
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    mingw-w64 wine64 \
+    mingw-w64 wine64 && ln -s /usr/bin/wine64 /usr/bin/wine \
     && rm -rf /var/lib/apt/lists/*
 
 # Create exact directory structures for physical host bind mounts

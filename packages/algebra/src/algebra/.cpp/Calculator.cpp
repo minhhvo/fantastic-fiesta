@@ -1,6 +1,5 @@
 
 #include "Calculator.hpp"
-// Need to clean-up unused dependencies
 
 #include <cmath>
 #include <functional>
@@ -54,6 +53,6 @@ double BaseCalculator::calculate(double x, double y, char oper)
     {
         return it->second(x, y); // Execute the lambda
     }
-    throw std::invalid_argument("Syntax Error: Unknown operator.");
+    throw std::invalid_argument("SyntaxError: Unknown operator.");
 }
 

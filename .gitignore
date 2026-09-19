@@ -13,6 +13,7 @@ docs/Functional_Requirements_for_Bibliographic_Records/*.pdf
 # Distribution / packaging
 .Python
 build/
+build-v2/
 develop-eggs/
 dist/
 downloads/

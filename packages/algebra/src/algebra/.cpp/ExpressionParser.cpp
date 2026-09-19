@@ -7,10 +7,13 @@
 - Iterating Stack-based Evaluation
 */
 
-#include "ExpressionParser.hpp"
 #include <cctype>
 #include <stdexcept>
 #include <stack>
+
+#include "ExpressionParser.hpp"
+#include "BracketParser.hpp"
+
 
 std::vector<Token> ExpressionParser::tokenize(const std::string& expression) 
 {
@@ -28,7 +31,7 @@ std::vector<Token> ExpressionParser::tokenize(const std::string& expression)
         }
     
     // get multi-digit numbers and decimal
-    if (std::isdigit(c) || c == '.') 
+        if (std::isdigit(c) || c == '.') 
         {
             std::string num_str;
             while (i < expression.length() && (std::isdigit(expression[i]) || expression[i] == '.')) 
@@ -40,27 +43,28 @@ std::vector<Token> ExpressionParser::tokenize(const std::string& expression)
             continue;
         }
     // get operators
-    if (c == '+' || c == '-' || c == '*' || c == '/') 
+        if (c == '+' || c == '-' || c == '*' || c == '/') 
         {
             tokens.push_back({TokenType::Operator, std::string(1, c)});
             i++;
             continue;
         }
     // get parentheses and brackets
-        if (c == '(') 
+        if (c == '(' || c == '[' || c == '{') 
         {
-            tokens.push_back({TokenType::LeftParen, "("});
+            tokens.push_back({TokenType::OpeningBrac, std::string(1, c)});
             i++;
             continue;
         }
-        if (c == ')') 
+        if (c == ')' || c == ']' || c == '}') 
         {
-            tokens.push_back({TokenType::RightParen, ")"});
+            tokens.push_back({TokenType::ClosingBrac, std::string(1, c)});
             i++;
             continue;
         }
 
-        throw std::invalid_argument(std::string("Syntax Error: Unknown character '") + c + "'");
+    // else { throw (); }
+        throw std::invalid_argument(std::string("SyntaxError: Unknown character '") + c + "'");
     
     } // end while-loop
     
@@ -70,29 +74,7 @@ std::vector<Token> ExpressionParser::tokenize(const std::string& expression)
 
 void ExpressionParser::validateBrackets(const std::vector<Token>& tokens)
 {
-    std::stack<std::string> brackets;
-    for (const auto& token: tokens)
-    {
-        if (token.type == TokenType::LeftParen)
-        {
-            brackets.push(token.value);
-        } else if (token.type == TokenType::RightParen) 
-        {
-            if (brackets.empty())
-            {
-                throw std::invalid_argument("Syntax Error: UnbaUnexpected closing parenthesis.");
-            }
-            // @FUTURE: implement a bracket check here if later add "[ | ]" and "{ | }" pairs.
-            // using brackets.top();
-
-            brackets.pop();
-        }
-    }
-
-    if (!brackets.empty())
-    {
-        throw std::invalid_argument("Syntax Error: Missing closing parenthesis.");
-    }
+    BracketParser::validate(tokens);
 } // end validateBrackets();
 
 int ExpressionParser::getPrecedence (const std::string&op) 
@@ -112,11 +94,11 @@ std::vector<Token> ExpressionParser::infixToPostfix(const std::vector<Token> &in
         if (token.type == TokenType::Number) { 
             postfix.push_back(token); 
         
-        } else if (token.type == TokenType::LeftParen) { 
+        } else if (token.type == TokenType::OpeningBrac) { 
             operators.push(token); 
         
-        } else if (token.type == TokenType::RightParen) {
-            while ( !operators.empty() && operators.top().type != TokenType::LeftParen )
+        } else if (token.type == TokenType::ClosingBrac) {
+            while ( !operators.empty() && operators.top().type != TokenType::OpeningBrac )
             {
                 postfix.push_back(operators.top());
                 operators.pop();
@@ -157,7 +139,7 @@ double ExpressionParser::evaluateRPN(const std::vector<Token>& postfix, BaseCalc
             values.push(std::stod(token.value));
         
         } else if (token.type == TokenType::Operator) {
-            if (values.size() < 2) throw std::invalid_argument("Syntax Error: Missing operands.");
+            if (values.size() < 2) throw std::invalid_argument("SyntaxError: Missing operands.");
             
             double right = values.top();
             values.pop();
@@ -167,7 +149,7 @@ double ExpressionParser::evaluateRPN(const std::vector<Token>& postfix, BaseCalc
 
             char op = token.value[0];
             
-            // Violating D.R.Y principle
+            // Violating D.R.Y principle (repeated elsewhere) 
             if (op == '/' && right == 0.0) throw std::domain_error("Division by zero.");
             
             // Calculate and push the result back onto the stack
@@ -176,7 +158,8 @@ double ExpressionParser::evaluateRPN(const std::vector<Token>& postfix, BaseCalc
         }
     } // end for-loop
 
-    if (values.size() != 1) throw std::invalid_argument("Syntax Error: Unbalanced expression.");
+    if (values.size() != 1) throw std::invalid_argument("SyntaxError: Unbalanced expression.");
+    
     return values.top();
 } // end evaluateRPN();
 

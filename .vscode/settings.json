@@ -12,5 +12,5 @@
     "packages/bibtex_frbr": false,
     "packages/json-api-metaschema": false
   },
-  "cmake.sourceDirectory": "/workspace/packages/algebra/src/algebra/.cpp"
+  "cmake.sourceDirectory": "C:/Users/votha/Desktop/.code-workspace/fantastic-fiesta"
 }
