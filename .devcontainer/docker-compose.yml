@@ -32,7 +32,7 @@ services:
     command: sleep infinity
 
   sandbox:
-    container_name: devtest
+    container_name: sandbox
     image: devtest
     build: 
       context: .
@@ -42,7 +42,7 @@ services:
     depends_on:
       - workspace
     environment:
-      - TARGET_EXE=${TARGET_EXE:-}
+      - TARGET_EXE=${TARGET_EXE:-build/projects/packages/algebra/src/algebra/.cpp/Calculator_test}
 
     develop:
       watch:
@@ -76,11 +76,7 @@ services:
         target: /clib/dst
         read_only: true # Strictly RO for the sandbox
     
-    command: >
-      bash -c "
-      echo \"--- Executing $${TARGET_EXE} in WINE Sandbox ---\" &&
-      wine /sandbox_workspace/$${TARGET_EXE}
-      "
+    command: sleep infinity
 
 volumes:
   bashhistory:   
