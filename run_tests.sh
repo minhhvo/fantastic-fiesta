@@ -35,3 +35,6 @@ echo -e "\n=== 4. Success ==="
 echo "Reports generated at:"
 echo "  - build/reports/unit_test_report.xml"
 echo "  - build/reports/benchmark_report.xml"
+
+echo -e "\n=== 5. Updating Local GitHub Pages Dashboard ==="
+python3 generate_dashboard.py
