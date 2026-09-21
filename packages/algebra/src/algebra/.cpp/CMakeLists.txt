@@ -3,9 +3,6 @@
 
 set(TARGET_PROJECT "Calculator")
 set (MAIN_EXE "MathSolver.cpp")
-project(${TARGET_PROJECT})
-
-enable_testing()
 
 # STEP 1: The "Dry" Compile
 # Using an OBJECT library syntax-checks and compiles the source files without the overhead of linking.
@@ -19,15 +16,17 @@ target_include_directories(${TARGET_PROJECT} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 # STEP 2: The Compiled Binary
 # Compiles the test executable completely independently from the same source files.
-add_executable(${TARGET_PROJECT}_test ${MAIN_EXE})
-target_link_libraries(
-    ${TARGET_PROJECT}_test PRIVATE ${TARGET_PROJECT} GTest::gtest_main
-)
+set(TEST_EXE "Calculator_test.cpp") 
+add_executable(${TARGET_PROJECT}_test ${TEST_EXE})
+target_link_libraries(${TARGET_PROJECT}_test PRIVATE ${TARGET_PROJECT} GTest::gtest_main)
 
 include(GoogleTest)
 gtest_discover_tests(${TARGET_PROJECT}_test
     XML_OUTPUT_DIR "${CMAKE_CURRENT_BINARY_DIR}/reports"
 )
+
+add_executable(MathSolver ${MAIN_EXE})
+target_link_libraries(MathSolver PRIVATE Calculator ConsoleApp)
 
 # ====================================== #
 # Micro-benchmarking macro / build stage #

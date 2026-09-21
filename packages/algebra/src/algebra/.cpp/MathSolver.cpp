@@ -1,22 +1,8 @@
 #include "Calculator.hpp"
 #include "ExpressionParser.hpp"
 
-#include <bits/std_thread.h>
-#include <bits/types/cookie_io_functions_t.h>
-#include <cmath>
-
-#include <cstdio>
-#include <cstdlib>
-#include <ctgmath>
-#include <cassert>
-
-#include <iosfwd>
 #include <iostream>
-
-#include <sys/types.h>
-#include <sys/wait.h>
-
-#include <unistd.h>
+#include <csignal>
 
 
 namespace ErrorReporter {
