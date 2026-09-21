@@ -21,7 +21,8 @@
 
 namespace ErrorReporter {
     // Intercepts specific exception types and formats standard user messages
-    void handleException(const std::exception& e) {
+    void handleException(const std::exception& e) 
+    {
         std::string errorMsg = e.what();
         
         if (errorMsg.find("Syntax") != std::string::npos) 

@@ -42,20 +42,25 @@ foreach(source_file IN LISTS AUDIT_SOURCES)
 
     string(STRIP "${source_file}" clean_source)
 
-    if("${clean_sourc}" STREQUAL "")
+    if("${clean_source}" STREQUAL "")
         continue()
     endif()
 
-    get_filename_component(file_base ${clean_source} NAME_WE)
+    get_filename_component(BASE_NAME ${clean_source} NAME_WE)
     
-    set(test_target "${file_base}.benchmark")
+    set(test_target "${BASE_NAME}.benchmark")
     
     add_executable(${test_target} ${clean_source})
-    target_link_libraries(${test_target} PRIVATE Calculator TimeIt)
-    set_source_files_properties(${clean_source} PROPERTIES COMPILE_DEFINITIONS UNIT_TEST=1)
-    add_test(NAME "Benchmark_${filebase}" COMMAND ${test_target})
+    target_link_libraries(${test_target} PRIVATE
+        Calculator 
+        TimeIt
+    )
+
+    target_compile_definitions(${test_target} PRIVATE UNIT_TEST=1)
+
+    add_test(NAME "Benchmark_${BASE_NAME}" COMMAND ${test_target})
 
     # (Optional) Tag it so later benchmarks can be run separately from proper unit tests
-    set_tests_properties("Benchmark_${filebase}" PROPERTIES LABELS "Benchmark")
+    set_tests_properties("Benchmark_${BASE_NAME}" PROPERTIES LABELS "Benchmark")
 
 endforeach()
