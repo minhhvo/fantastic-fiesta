@@ -23,11 +23,10 @@ std::vector<Token> ExpressionParser::tokenize(const std::string& expression)
     {
         char c = expression[i];
 
-        // 1. Ignore whitespaces
+    // Ignore whitespaces
         if (std::isspace(c)) 
         {
-            i++;
-            continue;
+            i++; continue;
         }
     
     // get multi-digit numbers and decimal
@@ -108,7 +107,7 @@ std::vector<Token> ExpressionParser::infixToPostfix(const std::vector<Token> &in
         } else if (token.type == TokenType::Operator) {
             while ( !operators.empty() 
                   && operators.top().type == TokenType::Operator 
-                  && getPrecedence(operators.top().value)
+                  && getPrecedence(operators.top().value) >= getPrecedence(token.value)
                 )
             {
                 postfix.push_back(operators.top());
