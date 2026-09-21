@@ -48,7 +48,7 @@ services:
       watch:
         - path: ../build
           action: sync+exec
-          target: /sandbox_workspace/build
+          target: /workspace/build
           exec:
             command: >
               bash -c '
@@ -58,7 +58,7 @@ services:
               fi ; 
               wine "/sandbox_workspace/$$TARGET_EXE"'
     volumes:
-      - ..:/sandbox_workspace
+      - ..:/workspace
       
       # --- Sandbox Read-Only Library Access ---
       - type: bind
