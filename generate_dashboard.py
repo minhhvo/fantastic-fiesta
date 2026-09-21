@@ -1,15 +1,16 @@
-import xml.etree.ElementTree as ET
+
 import os
-import datetime
+import datetime as datetime
+import xml.etree.ElementTree as ET
 
 def parse_report(file_path, title):
     if not os.path.exists(file_path):
         return f"<h3>{title}</h3><p>No report generated yet.</p>"
-    
+
     try:
         tree = ET.parse(file_path)
         root = tree.getroot()
-        
+
         # CTest output usually puts testcases directly under a root <testsuite>
         html = f"<h3>{title}</h3><ul>"
         for testcase in root.iter('testcase'):
@@ -25,11 +26,11 @@ def parse_report(file_path, title):
 
 def build_dashboard():
     os.makedirs("docs", exist_ok=True)
-    
+
     # 1. Parse Test Reports
     unit_html = parse_report("build/reports/unit_test_report.xml", "Unit Tests")
     bench_html = parse_report("build/reports/benchmark_report.xml", "Micro-Benchmarks")
-    
+
     # 2. Parse Changelog (if it exists)
     changelog_content = "<p>No CHANGELOG.md found in root.</p>"
     if os.path.exists("CHANGELOG.md"):
@@ -56,7 +57,7 @@ def build_dashboard():
     <body>
         <h1>Project Dashboard</h1>
         <p><small>Last Updated: {timestamp}</small></p>
-        
+
         <h2>Latest Test Results</h2>
         {unit_html}
         {bench_html}
@@ -66,7 +67,7 @@ def build_dashboard():
     </body>
     </html>
     """
-    
+
     with open("docs/index.html", "w") as f:
         f.write(html_template)
     print("Dashboard generated at docs/index.html")

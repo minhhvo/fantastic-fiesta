@@ -4,9 +4,9 @@ set -e
 
 echo "=== 1. Compiling (Dev Environment) ==="
 ninja -C build
-mkdir -p -p build/reports build/Testing/Temporary
+mkdir -p build/reports build/Testing/Temporary
 # Grant the 'guest' sandbox user permission to write test logs and XML reports
-chmod -R 777 build
+sudo chmod -R 777 build
 
 echo -e "\n=== 2. Unit Tests (Sandbox Environment) ==="
 SANDBOX_ID=$(docker ps -q -f "label=com.docker.compose.service=sandbox" -f "status=running")
