@@ -11,8 +11,8 @@
 #define APP_NAME "Example"
 #endif
 
-namespace ConsoleApp {
-
+namespace ConsoleApp 
+{
     // Declarations for standard functions (implemented in .cpp)
     void endProcess(int signum);
     void displaySystemError(const std::error_code& e);
@@ -38,19 +38,21 @@ namespace ConsoleApp {
     inline void runRepl(ExecuteFn&& executeCommand) {
         initSignals();
         
-        std::cout << APP_NAME << " Console Application\n\n";
-        std::cout << "Enter any expression to start\n\n\t'quit' or 'Q' to exit.\n\n";
-        std::cout << "Press 'Ctrl + D' (EOF) or 'Ctrl + C' to force quit.\n";
+        std::cout << "Calculator" << " Console Application\n\n";
+        std::cout << "Enter any expression to start.\n\n" << "To close the program, enter 'quit' or 'Q'.\n";
+        std::cout << "Press 'Ctrl + C' to force quit.\n" << std::endl;
 
         std::string cmd_line;
         while (true) {
             std::cout << "\n> ";
             if (!std::getline(std::cin, cmd_line)) break;
 
-            if (cmd_line == "quit" || cmd_line == "Q") {
-                std::cout << "Exiting program...\n";
+            if (cmd_line == "quit" || cmd_line == "Q") 
+            {
+                std::cout << "Closing application...\n";
                 std::exit(0);
             }
+            
             if (cmd_line.empty()) continue;
 
             tryExecute([&]() {

@@ -42,7 +42,7 @@ std::vector<Token> ExpressionParser::tokenize(const std::string& expression)
             continue;
         }
     // get operators
-        if (c == '+' || c == '-' || c == '*' || c == '/') 
+        if (c == '+' || c == '-' || c == '*' || c == '/' || c == '^')
         {
             tokens.push_back({TokenType::Operator, std::string(1, c)});
             i++;
@@ -76,10 +76,11 @@ void ExpressionParser::validateBrackets(const std::vector<Token>& tokens)
     BracketParser::validate(tokens);
 } // end validateBrackets();
 
-int ExpressionParser::getPrecedence (const std::string&op) 
+int ExpressionParser::getPrecedence (char op) 
 {
-    if (op == "*" || op == "/") return 2;
-    if (op == "+" || op == "-") return 1;
+    if (op == '^') return 3;
+    if (op == '*' || op == '/') return 2;
+    if (op == '+' || op == '-') return 1;
     return 0;
 } // end getPrecendence();
 
@@ -106,10 +107,15 @@ std::vector<Token> ExpressionParser::infixToPostfix(const std::vector<Token> &in
 
         } else if (token.type == TokenType::Operator) {
             while ( !operators.empty() 
-                  && operators.top().type == TokenType::Operator 
-                  && getPrecedence(operators.top().value) >= getPrecedence(token.value)
+                  && operators.top().type == TokenType::Operator
                 )
             {
+                int topPrec = getPrecedence(operators.top().value[0]);
+                int currentPrec = getPrecedence(token.value[0]);
+
+                bool shouldPop = (token.value[0] == '^') ? (topPrec > currentPrec) : (topPrec >= currentPrec);
+                if (!shouldPop) break;
+
                 postfix.push_back(operators.top());
                 operators.pop();
             } // end while-loop
@@ -147,9 +153,6 @@ double ExpressionParser::evaluateRPN(const std::vector<Token>& postfix, BaseCalc
             values.pop();
 
             char op = token.value[0];
-            
-            // Violating D.R.Y principle (repeated elsewhere) 
-            if (op == '/' && right == 0.0) throw std::domain_error("Division by zero.");
             
             // Calculate and push the result back onto the stack
             double result = calc.calculate(left, right, op);

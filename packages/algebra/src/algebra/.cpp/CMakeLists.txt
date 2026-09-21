@@ -33,7 +33,6 @@ target_link_libraries(MathSolver PRIVATE Calculator ConsoleApp)
 # ====================================== #
 set(AUDIT_SOURCES
     BracketParser.cpp
-    InfixToPostfix.cpp
     ExpressionParser.cpp
 ) # << List the files that needs benchmarking executables.
 
